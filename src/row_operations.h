@@ -9,5 +9,7 @@ int editorRowCxToRx(erow* row, int cx);
 void editorAppendRow(char* s, size_t len);
 void editorInsertChar(int c);
 void editorRowDelChar(erow* row, int at);
+void editorFreeRow(erow* row);
+void editorDelRow(int at);
 
 #endif

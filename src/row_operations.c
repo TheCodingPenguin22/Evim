@@ -99,3 +99,19 @@ void editorRowDelChar(erow* row, int at){
   editorUpdateRow(row);
   E.dirty++;
 }
+
+// Frees the memory used by the row.
+void editorFreeRow(erow* row){
+  free(row->render);
+  free(row->chars);
+}
+
+void editorDelRow(int at){
+  if( at < 0 ||at >= E.numrows) return;
+  editorFreeRow(&E.row[at]);
+
+  // Moves the memory to fill the new deleted row.
+  memmove(&E.row[at], &E.row[at + 1], sizeof(erow) * (E.numrows - at -1));
+  E.numrows--;
+  E.dirty++;
+}
