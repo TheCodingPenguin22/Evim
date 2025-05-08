@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "init.h": "c",
+        "terminal.h": "c",
+        "row_operations.h": "c",
+        "output.h": "c",
+        "errno.h": "c",
+        "data.h": "c",
+        "termios.h": "c",
+        "stdlib.h": "c",
+        "file_io.h": "c"
+    }
+}
