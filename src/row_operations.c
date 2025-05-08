@@ -14,7 +14,7 @@ void editorUpdateRow(erow* row) {
 
   // Allocates the space.
   free(row->render);
-  row->render = malloc(row->size + tabs*(KILO_TAB_STOP - 1) + 1);
+  row->render = malloc(row->size + tabs*(EVIM_TAB_STOP - 1) + 1);
 
   // Adds the spaces if a tabs is found.
   // Otherwise it just adds the current char.
@@ -22,7 +22,7 @@ void editorUpdateRow(erow* row) {
   for (j = 0; j < row->size; j++) {
     if(row->chars[j] == '\t'){
       row->render[idx++] = ' ';
-      while (idx % KILO_TAB_STOP != 0) row->render[idx++] = ' ';
+      while (idx % EVIM_TAB_STOP != 0) row->render[idx++] = ' ';
     }
     else {
       row->render[idx++] = row->chars[j];
@@ -56,13 +56,13 @@ void editorRowInsertChar(erow* row, int at, int c) {
 
 
 // This converts Cx to Rx, meaning it it takes the current cursor posistion and and any tabs('\t') to it.
-// The size of a tab is currently defined by KILO_TAB_STOP
+// The size of a tab is currently defined by EVIM_TAB_STOP
 int editorRowCxToRx(erow* row, int cx){
   int rx = 0;
   int j;
   for (j = 0; j < cx; j++){
     if(row->chars[j] == '\t'){
-      rx += (KILO_TAB_STOP - 1) - (rx % KILO_TAB_STOP);
+      rx += (EVIM_TAB_STOP - 1) - (rx % EVIM_TAB_STOP);
     }
     rx++;
   }

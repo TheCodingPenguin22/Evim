@@ -72,7 +72,7 @@ void editorMoveCursor(int key) {
   
   // Waits for editorReadKey() then it handles the keypresses that the function returns.
 void editorProcessKeypress() {
-  static int quit_times  = KILO_QUIT_TIMES;
+  static int quit_times  = EVIM_QUIT_TIMES;
   int c = editorReadKey();
 
   switch (c) {
@@ -147,6 +147,6 @@ void editorProcessKeypress() {
       editorInsertChar(c);
       break;
   }
-  quit_times = KILO_QUIT_TIMES;
+  quit_times = EVIM_QUIT_TIMES;
 }
 

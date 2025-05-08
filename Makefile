@@ -1,5 +1,5 @@
 # Name of the final executable
-TARGET = bin/kilo
+TARGET = bin/evim
 
 # Compiler and flags
 CC = gcc

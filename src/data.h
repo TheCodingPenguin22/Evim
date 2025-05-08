@@ -10,10 +10,10 @@
 #include <termios.h>
 #include <time.h>
 
-#define KILO_VERSION "0.1.1"
-#define KILO_TAB_STOP 4
+#define EVIM_VERSION "0.1.1"
+#define EVIM_TAB_STOP 4
 #define CTRL_KEY(k) ((k) & 0x1f)
-#define KILO_QUIT_TIMES 3
+#define EVIM_QUIT_TIMES 3
 
 // An enumarator to keep track of the chosen values for each key.
 enum editorkey {

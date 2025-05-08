@@ -44,7 +44,7 @@ void editorDrawRows(struct abuf *ab) {
       
       // snprintf returns the size of the given array (welcome) plus the string literal and the arguments passed to it, in this case KILO_VERSION.
       int welcomelen = snprintf(welcome, sizeof(welcome),
-        "Kilo editor -- version %s", KILO_VERSION);
+        "Evim editor -- version %s", EVIM_VERSION);
       
       // Sets the maximum length of the welcomemsg to the screen width.
       if(welcomelen > E.screencols ) welcomelen = E.screencols;
