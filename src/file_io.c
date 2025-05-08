@@ -78,7 +78,7 @@ void editorOpen(char *filename) {
 
 void editorSave() {
   if (E.filename == NULL) {
-    E.filename = editorPromt("Save as: %s");
+    E.filename = editorPrompt("Save as: %s");
   }
 
   // The length of the total file.
