@@ -29,7 +29,7 @@ void editorDelChar() {
 }
 
 void editorInsertNewline() {
-  if (E.cx == 0) {
+  if (E.cx == 0 && E.cy == 0) {
     editorInsertRow(E.numrows, "", 0);
   }
   else {
@@ -39,7 +39,10 @@ void editorInsertNewline() {
     row->size = E.cx;
     row->chars[row->size] = '\0';
     editorUpdateRow(row);
+    
   }
-  E.cy++;
+  if(E.cy + 1 < E.numrows){
+    E.cy++;
+  }
   E.cx = 0;
 }
