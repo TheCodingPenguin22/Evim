@@ -16,6 +16,7 @@
 #include "file_io.h"
 #include "data.h"
 #include "row_operations.h"
+#include "editor_operations.h"
 #include "output.h"
 
 // This function is responsible for moving the cursor.
@@ -109,7 +110,8 @@ void editorProcessKeypress() {
     case BACKSPACE:
     case CTRL_KEY('h'):
     case DEL_KEY:
-      /* TODO*/
+      if(c == DEL_KEY) editorMoveCursor(ARROW_RIGHT);
+      editorDelChar();
       break;
     // Goes to top of file if PAGE_UP is pressed
     // and bottom of file if PAGE_DOWN is pressed.

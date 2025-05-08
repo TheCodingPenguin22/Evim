@@ -89,3 +89,13 @@ void editorAppendRow(char *s, size_t len) {
   E.dirty++;
 }
 
+
+void editorRowDelChar(erow* row, int at){
+  if (at < 0 || at >= row->size) return;
+  // Moves the array one index to the left.
+  // chars[at] becomes chars[at + 1 ] and the rest move with it.
+  memmove(&row->chars[at], &row->chars[at + 1], row->size - at);
+  row->size--;
+  editorUpdateRow(row);
+  E.dirty++;
+}

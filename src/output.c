@@ -42,7 +42,7 @@ void editorDrawRows(struct abuf *ab) {
       if(E.numrows == 0 && y == E.screenrows / 3) {
       char welcome [80];
       
-      // snprintf returns the size of the given array (welcome) plus the string literal and the arguments passed to it, in this case KILO_VERSION.
+      // snprintf returns the size of the given array (welcome) plus the string literal and the arguments passed to it, in this case EVIM_VERSION.
       int welcomelen = snprintf(welcome, sizeof(welcome),
         "Evim editor -- version %s", EVIM_VERSION);
       
