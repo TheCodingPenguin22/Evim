@@ -3,6 +3,7 @@
 #include "file_io.h"
 #include "terminal.h"
 #include "output.h"
+#include "input.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,7 +77,9 @@ void editorOpen(char *filename) {
 }
 
 void editorSave() {
-  if (E.filename == NULL) return;
+  if (E.filename == NULL) {
+    E.filename = editorPromt("Save as: %s");
+  }
 
   // The length of the total file.
   int len;

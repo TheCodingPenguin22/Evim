@@ -3,6 +3,6 @@
 
 void editorMoveCursor(int key);
 void editorProcessKeypress();
-
+char* editorPrompt(char* promt);
 
 #endif
