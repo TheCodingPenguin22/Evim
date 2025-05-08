@@ -11,5 +11,6 @@ void editorInsertChar(int c);
 void editorRowDelChar(erow* row, int at);
 void editorFreeRow(erow* row);
 void editorDelRow(int at);
+void editorRowAppendString(erow* row, char* s, size_t len);
 
 #endif
