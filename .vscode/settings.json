@@ -9,6 +9,7 @@
         "data.h": "c",
         "termios.h": "c",
         "stdlib.h": "c",
-        "file_io.h": "c"
+        "file_io.h": "c",
+        "editor_operations.h": "c"
     }
 }
