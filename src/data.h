@@ -15,6 +15,7 @@
 #define CTRL_KEY(k) ((k) & 0x1f)
 #define EVIM_QUIT_TIMES 3
 
+
 // An enumarator to keep track of the chosen values for each key.
 enum editorkey {
   BACKSPACE = 127,
@@ -27,6 +28,11 @@ enum editorkey {
   END_KEY,
   PAGE_UP, 
   PAGE_DOWN
+};
+
+enum modes{
+  NORMAL_MODE = 1,
+  INSERT_MODE = 2
 };
 
 /*** data ***/
@@ -54,6 +60,7 @@ struct editorConfig {
   char* filename;
   char statusmsg[80];
   time_t statusmsg_time;
+  int mode;
 };
 
 struct abuf {
