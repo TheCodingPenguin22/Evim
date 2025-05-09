@@ -15,11 +15,12 @@ int main(int argc, char *argv[])
     editorOpen(argv[1]);
   }
 
-  editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit E.numrows: %d, E.cy: %d", E.numrows, E.cy);
+  editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit");
   
   while (1){
     editorRefreshScreen();
-    editorProcessKeypress();
+    if(E.currentMode == 0) editorProcessKeypressNormalMode();
+    if(E.currentMode == 1) editorProcessKeypressInserMode();
   }
   return 0;
 }

@@ -72,11 +72,16 @@ void editorMoveCursor(int key) {
 } 
   
   // Waits for editorReadKey() then it handles the keypresses that the function returns.
-void editorProcessKeypress() {
+void editorProcessKeypressNormalMode() {
   static int quit_times  = EVIM_QUIT_TIMES;
   int c = editorReadKey();
 
+  editorSetStatusMessage("Current keycode: %d", c);
+
   switch (c) {
+    case 105:
+      E.currentMode = 1;
+      break;
     case '\r':
       editorInsertNewline();
       break;
@@ -144,14 +149,22 @@ void editorProcessKeypress() {
     case CTRL_KEY('l'):
     case '\x1b':
       break;
-
-    default:
-      editorInsertChar(c);
-      break;
   }
   quit_times = EVIM_QUIT_TIMES;
 }
 
+void editorProcessKeypressInserMode(){
+  int c = editorReadKey();  
+  switch(c){
+    case CTRL_KEY('l'):
+    case '\x1b':
+      E.currentMode = 0;
+      break;
+    default:
+      editorInsertChar(c);
+      break;
+  }
+}
 
 // Function for writing a promt to the status bar
 char* editorPrompt(char* promt){

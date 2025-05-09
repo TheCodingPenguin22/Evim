@@ -30,12 +30,12 @@ enum editorkey {
   PAGE_DOWN
 };
 
-enum modes{
-  NORMAL_MODE = 1,
-  INSERT_MODE = 2
-};
 
 /*** data ***/
+
+typedef struct editorMode{
+  char* name;
+} editorMode;
 
 // A struct that holds info about the current row.
 typedef struct erow {
@@ -54,13 +54,14 @@ struct editorConfig {
   int screenrows;
   int screencols;
   int numrows;
-  erow *row;
+  erow* row;
   int dirty;
   struct termios orig_termios;
   char* filename;
   char statusmsg[80];
   time_t statusmsg_time;
-  int mode;
+  editorMode* modes;
+  int currentMode;
 };
 
 struct abuf {

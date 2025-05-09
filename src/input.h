@@ -2,7 +2,8 @@
 #define INPUT_H
 
 void editorMoveCursor(int key);
-void editorProcessKeypress();
+void editorProcessKeypressInserMode();
+void editorProcessKeypressNormalMode();
 char* editorPrompt(char* promt);
 
 #endif

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #include "output.h"
 #include "append_buffer.h"
 #include "row_operations.h"
@@ -102,7 +101,7 @@ void editorDrawStatusBar(struct abuf *ab) {
   char status[80], posstatus[80];
   // Calculates the length of the status bar string. 
   // Sets the filename to [No Name] if there is no filename avaliable.
-  int len = snprintf(status, sizeof(status), "%.20s - %d lines %s", E.filename ? E.filename : "[No Name]", E.numrows, E.dirty ? "(modified)" : "");
+  int len = snprintf(status, sizeof(status), "%.20s - %d lines %s - %s mode", E.filename ? E.filename : "[No Name]", E.numrows, E.dirty ? "(modified)" : "", E.modes[E.currentMode].name);
 
   // Calculates the length of the posistion string.
   int poslen = snprintf(posstatus, sizeof(posstatus), "%d:%d", E.cy + 1, E.cx+1);
