@@ -79,11 +79,9 @@ void editorProcessKeypressNormalMode() {
   editorSetStatusMessage("Current keycode: %d", c);
 
   switch (c) {
+    // Goes into insert mode
     case 105:
       E.currentMode = 1;
-      break;
-    case '\r':
-      editorInsertNewline();
       break;
     // Quits if it gets ctrl-Q.
     case CTRL_KEY('q'):
@@ -96,7 +94,7 @@ void editorProcessKeypressNormalMode() {
       write(STDOUT_FILENO, "\x1b[H", 3);
       exit(0);
       break;
-
+    // Saves the file
     case CTRL_KEY('s'):
       editorSave();
       break;
@@ -112,12 +110,7 @@ void editorProcessKeypressNormalMode() {
       }
       break;
 
-    case BACKSPACE:
-    case CTRL_KEY('h'):
-    case DEL_KEY:
-      if(c == DEL_KEY) editorMoveCursor(ARROW_RIGHT);
-      editorDelChar();
-      break;
+    
     // Goes to top of file if PAGE_UP is pressed
     // and bottom of file if PAGE_DOWN is pressed.
     case PAGE_UP:
@@ -156,10 +149,24 @@ void editorProcessKeypressNormalMode() {
 void editorProcessKeypressInserMode(){
   int c = editorReadKey();  
   switch(c){
+    // Delete chars
+    case BACKSPACE:
+    case CTRL_KEY('h'):
+    case DEL_KEY:
+      if(c == DEL_KEY) editorMoveCursor(ARROW_RIGHT);
+      editorDelChar();
+      break;
+    // Go back to normal mode
     case CTRL_KEY('l'):
     case '\x1b':
       E.currentMode = 0;
+      editorRefreshScreen();
       break;
+    // Insert a new line when pressing enter
+    case '\r':
+      editorInsertNewline();
+      break;
+    // Insert char.
     default:
       editorInsertChar(c);
       break;

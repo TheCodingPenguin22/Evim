@@ -1,14 +1,19 @@
+#include <ctype.h>
+
 #include "editor_operations.h"
+
 
 #include "data.h"
 #include "row_operations.h"
 
 void editorInsertChar(int c){
+  if(!iscntrl(c) && !(c == ARROW_UP || c == ARROW_DOWN || c == ARROW_LEFT ||c == ARROW_RIGHT)){
   if (E.cy == E.numrows) {
     editorInsertRow(E.numrows, "", 0);
   }
   editorRowInsertChar(&E.row[E.cy], E.cx, c);
   E.cx++;
+  }
 }
 
 void editorDelChar() {
