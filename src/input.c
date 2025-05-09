@@ -82,6 +82,7 @@ void editorProcessKeypressNormalMode() {
     // Goes into insert mode
     case 105:
       E.currentMode = 1;
+      editorRefreshScreen();
       break;
     // Quits if it gets ctrl-Q.
     case CTRL_KEY('q'):
