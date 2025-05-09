@@ -5,6 +5,7 @@
 - i = Enter insert Mode
 - ctrl+Q = Quit
 - ctrl+S = Save or save as 
+- h, j, k, l = Move Left, Down, Up, Right respectivly
  
 
 ### Insert Mode
