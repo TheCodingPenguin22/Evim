@@ -17,9 +17,10 @@ void initEditor() {
   E.statusmsg[0] = '\0';
   E.statusmsg_time = 0;
 
-  E.modes = malloc(2 * sizeof(editorMode));
-  E.modes[0].name = "Normal";
-  E.modes[1].name = "Insert";
+  E.modes = malloc(3 * sizeof(editorMode));
+  E.modes[NORMAL_MODE].name = "Normal";
+  E.modes[INSERT_MODE].name = "Insert";
+  E.modes[COMMAND_MODE].name = "Command";
 
   E.currentMode = 0;
 

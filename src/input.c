@@ -73,27 +73,19 @@ void editorMoveCursor(int key) {
   
   // Waits for editorReadKey() then it handles the keypresses that the function returns.
 void editorProcessKeypressNormalMode() {
-  static int quit_times  = EVIM_QUIT_TIMES;
   int c = editorReadKey();
 
   editorSetStatusMessage("Current keycode: %d", c);
 
   switch (c) {
+    // Goes into command mode when pressing ':'
+    case 58:
+      E.currentMode = COMMAND_MODE;
+      break;
     // Goes into insert mode
     case 105:
-      E.currentMode = 1;
+      E.currentMode = INSERT_MODE;
       editorRefreshScreen();
-      break;
-    // Quits if it gets ctrl-Q.
-    case CTRL_KEY('q'):
-      if(E.dirty && quit_times > 0){
-        editorSetStatusMessage("WARING!!!! File has unsaved changes. Press ctrl-Q %d more times to quit.", quit_times);
-        quit_times--;
-        return;
-      }
-      write(STDOUT_FILENO, "\x1b[2J", 4);  
-      write(STDOUT_FILENO, "\x1b[H", 3);
-      exit(0);
       break;
     // Saves the file
     case CTRL_KEY('s'):
@@ -144,7 +136,7 @@ void editorProcessKeypressNormalMode() {
     case '\x1b':
       break;
   }
-  quit_times = EVIM_QUIT_TIMES;
+  
 }
 
 void editorProcessKeypressInserMode(){
@@ -160,7 +152,7 @@ void editorProcessKeypressInserMode(){
     // Go back to normal mode
     case CTRL_KEY('l'):
     case '\x1b':
-      E.currentMode = 0;
+      E.currentMode = NORMAL_MODE;
       editorRefreshScreen();
       break;
     // Insert a new line when pressing enter
@@ -172,6 +164,41 @@ void editorProcessKeypressInserMode(){
       editorInsertChar(c);
       break;
   }
+}
+
+void editorProcessKeypressCommandMode(){
+  char* command = editorPrompt(":%s");
+  if(command == NULL){
+    E.currentMode = NORMAL_MODE;
+    return;
+  }
+  int commandlen = strlen(command);
+
+  if(commandlen == 1){
+    if(command[0] == WRITE){
+      editorSave();
+    }
+    else if (command[0] == QUIT){
+      if(E.dirty > 0){
+        editorSetStatusMessage("Warning! File has unsaved changes. Type 'q!' to force quit");
+      }
+      else {
+        editorExit();
+      }
+    }
+  }
+  else if (commandlen == 2) {
+    if(command[0] == WRITE && command[1] == QUIT){
+      editorSave();
+      editorExit();
+    }
+    if(command[0] == QUIT && command[1] == '!'){
+      editorExit();
+    }
+  }
+  
+
+  E.currentMode = NORMAL_MODE;
 }
 
 // Function for writing a promt to the status bar
