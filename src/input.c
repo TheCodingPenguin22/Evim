@@ -166,7 +166,12 @@ char* editorPrompt(char* promt){
     editorRefreshScreen();
 
     int c = editorReadKey();
-    if(c == '\r') {
+    if(c == '\x1b') {
+      editorSetStatusMessage("",0);
+      free(buf);
+      return NULL;
+    }
+    else if(c == '\r') {
       if (buflen != 0) {
         editorSetStatusMessage("");
         return buf;
