@@ -97,7 +97,13 @@ void editorDrawRows(struct abuf *ab) {
 // Draws the status bar to the buffer.
 void editorDrawStatusBar(struct abuf *ab) {
   // Inverts the colours of the terminal for the current row.
-  abAppend(ab, "\x1b[7m", 4);
+  
+  if(E.currentMode == NORMAL_MODE){
+    abAppend(ab, "\x1b[97;44m", 8);
+  }
+  else if(E.currentMode == INSERT_MODE) {
+    abAppend(ab, "\x1b[97;41m", 8);
+  }
   char status[80], posstatus[80];
   // Calculates the length of the status bar string. 
   // Sets the filename to [No Name] if there is no filename avaliable.

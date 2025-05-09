@@ -19,8 +19,9 @@ int main(int argc, char *argv[])
   
   while (1){
     editorRefreshScreen();
-    if(E.currentMode == 0) editorProcessKeypressNormalMode();
-    if(E.currentMode == 1) editorProcessKeypressInserMode();
+    if(E.currentMode == NORMAL_MODE) editorProcessKeypressNormalMode();
+    if(E.currentMode == INSERT_MODE) editorProcessKeypressInserMode();
+    editorRefreshScreen();
   }
   return 0;
 }
