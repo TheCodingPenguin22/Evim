@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
     editorRefreshScreen();
     if(E.currentMode == NORMAL_MODE) editorProcessKeypressNormalMode();
     if(E.currentMode == INSERT_MODE) editorProcessKeypressInserMode();
+    if(E.currentMode == COMMAND_MODE) editorProcessKeypressCommandMode();
     editorRefreshScreen();
   }
   return 0;

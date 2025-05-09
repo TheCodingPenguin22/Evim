@@ -15,8 +15,8 @@
 #define CTRL_KEY(k) ((k) & 0x1f)
 #define EVIM_QUIT_TIMES 3
 
-#define NORMAL_MODE 0
-#define INSERT_MODE 1
+#define WRITE 'w'
+#define QUIT 'q'
 
 // An enumarator to keep track of the chosen values for each key.
 enum editorkey {
@@ -32,6 +32,11 @@ enum editorkey {
   PAGE_DOWN
 };
 
+enum modes {
+  NORMAL_MODE = 0,
+  INSERT_MODE,
+  COMMAND_MODE,
+};
 
 /*** data ***/
 
