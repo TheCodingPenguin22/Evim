@@ -1,0 +1,39 @@
+[33mcee1292[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: checkout: moving from implement-modes to main
+[33m8759c86[m[33m ([m[1;31morigin/implement-modes[m[33m)[m HEAD@{1}: commit: Added command mode and commands
+[33md463710[m HEAD@{2}: commit: Added colour for the status bar that changes depending on the mode and made colour update as soon as switching mode
+[33meb77222[m HEAD@{3}: reset: moving to eb77222
+[33meb77222[m HEAD@{4}: commit: Fixed movement in normal mode and changed from arrow keys to vim style movement
+[33m0a1eca5[m HEAD@{5}: commit: Added insert mode
+[33ma9c98d0[m HEAD@{6}: commit: Added very basic modes
+[33m957b564[m HEAD@{7}: commit: added base for modes
+[33mcee1292[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{8}: checkout: moving from main to implement-modes
+[33mcee1292[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{9}: merge fix-save-as: Fast-forward
+[33m4b1e092[m HEAD@{10}: checkout: moving from fix-save-as to main
+[33mcee1292[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{11}: commit: fixed save as
+[33m4b1e092[m HEAD@{12}: checkout: moving from main to fix-save-as
+[33m4b1e092[m HEAD@{13}: commit: Added ability to exit from save prompt
+[33m1c410e9[m HEAD@{14}: commit: Fixed enter not working properly
+[33mc44fdce[m HEAD@{15}: commit: fixed a spelling misstake
+[33m5a77eff[m HEAD@{16}: merge save-as: Fast-forward
+[33mac4029d[m HEAD@{17}: checkout: moving from save-as to main
+[33m5a77eff[m HEAD@{18}: commit: Added basic save as functionality
+[33mac4029d[m HEAD@{19}: checkout: moving from main to save-as
+[33mac4029d[m HEAD@{20}: commit: misc
+[33m3e42889[m HEAD@{21}: commit: I goofed
+[33m4c6ec59[m HEAD@{22}: checkout: moving from the-enter-key to main
+[33m9946cc8[m HEAD@{23}: commit: Added support for the enter key
+[33mf185fe6[m HEAD@{24}: commit: Added support for inserting a new row instead of appending it
+[33m4c6ec59[m HEAD@{25}: checkout: moving from main to the-enter-key
+[33m4c6ec59[m HEAD@{26}: merge backspaing-at-start-of-line: Fast-forward
+[33m91adbc2[m HEAD@{27}: checkout: moving from backspaing-at-start-of-line to main
+[33m4c6ec59[m HEAD@{28}: commit: Added delete functionallity at start of line
+[33m92e7a59[m HEAD@{29}: commit: Added functions to append a string to end of row
+[33m3970811[m HEAD@{30}: commit: Added functions for freeing and moving memory to fill removed row
+[33m91adbc2[m HEAD@{31}: checkout: moving from main to backspaing-at-start-of-line
+[33m91adbc2[m HEAD@{32}: merge simple-backspacing: Fast-forward
+[33mebdf222[m HEAD@{33}: checkout: moving from simple-backspacing to main
+[33m91adbc2[m HEAD@{34}: commit: Added function to delete letters from files
+[33mebdf222[m HEAD@{35}: checkout: moving from main to simple-backspacing
+[33mebdf222[m HEAD@{36}: Branch: renamed refs/heads/master to refs/heads/main
+[33mebdf222[m HEAD@{38}: commit: initial commit
+[33m1dd9d53[m HEAD@{39}: commit (initial): Initial commit
