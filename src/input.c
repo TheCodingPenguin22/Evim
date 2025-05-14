@@ -207,6 +207,22 @@ void editorProcessKeypressVimMotion(char c) {
     appendToVimMotionBuffer('d');
     break;
   }
+
+  if (E.mBuffer.bufferSize == 2) {
+    if (E.mBuffer.buffer[0] == 'd') {
+      if (E.mBuffer.buffer[1] == 'd') {
+        editorSetStatusMessage("deleting row");
+        int at = E.cy;
+        editorFreeRow(&E.row[at]);
+
+        memmove(&E.row[at], &E.row[at + 1],
+                sizeof(erow) * (E.numrows - at - 1));
+        E.numrows--;
+        E.dirty++;
+      }
+    }
+  }
+  editorRefreshScreen();
 }
 // Function for writing a promt to the status bar
 char *editorPrompt(char *promt) {
