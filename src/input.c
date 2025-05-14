@@ -87,6 +87,11 @@ void editorProcessKeypressNormalMode() {
       E.currentMode = INSERT_MODE;
       editorRefreshScreen();
       break;
+    // Insers a new row add goes into insert mode
+    case 111:
+      editorInsertNewline();
+      E.currentMode = INSERT_MODE;
+      break;
     // Saves the file
     case CTRL_KEY('s'):
       editorSave();
@@ -140,6 +145,7 @@ void editorProcessKeypressNormalMode() {
 }
 
 void editorProcessKeypressInserMode(){
+  editorRefreshScreen();
   int c = editorReadKey();  
   switch(c){
     // Delete chars
