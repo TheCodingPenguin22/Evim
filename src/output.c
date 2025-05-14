@@ -104,6 +104,9 @@ void editorDrawStatusBar(struct abuf *ab) {
   else if(E.currentMode == INSERT_MODE) {
     abAppend(ab, "\x1b[97;41m", 8);
   }
+  else if (E.currentMode == COMMAND_MODE){
+      abAppend(ab, "\x1b[30;107m", 9);
+  }
   char status[80], posstatus[80];
   // Calculates the length of the status bar string. 
   // Sets the filename to [No Name] if there is no filename avaliable.
