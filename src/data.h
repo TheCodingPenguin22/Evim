@@ -4,7 +4,6 @@
 
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
-#define _GNU_SOURCE
 #define _POSIX_C_SOURCE 200809L
 
 #include <termios.h>
@@ -28,7 +27,7 @@ enum editorkey {
   DEL_KEY,
   HOME_KEY,
   END_KEY,
-  PAGE_UP, 
+  PAGE_UP,
   PAGE_DOWN
 };
 
@@ -39,9 +38,9 @@ enum modes {
 };
 
 /*** data ***/
-
-typedef struct editorMode{
-  char* name;
+// A struct to keep track of the current editor mode
+typedef struct editorMode {
+  char *name;
 } editorMode;
 
 // A struct that holds info about the current row.
@@ -52,6 +51,12 @@ typedef struct erow {
   char *render;
 } erow;
 
+// A struct to hold the buffer for the vim motions
+typedef struct motionBuffer {
+  char *buffer;
+  unsigned int bufferSize;
+} motionBuffer;
+
 // A struct to hold all of the current configuration for the terminal.
 struct editorConfig {
   int cx, cy;
@@ -61,14 +66,15 @@ struct editorConfig {
   int screenrows;
   int screencols;
   int numrows;
-  erow* row;
+  erow *row;
   int dirty;
   struct termios orig_termios;
-  char* filename;
+  char *filename;
   char statusmsg[80];
   time_t statusmsg_time;
-  editorMode* modes;
+  editorMode *modes;
   int currentMode;
+  struct motionBuffer mBuffer;
 };
 
 struct abuf {
