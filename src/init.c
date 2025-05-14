@@ -17,7 +17,10 @@ void initEditor() {
   E.statusmsg[0] = '\0';
   E.statusmsg_time = 0;
 
-  E.mBuffer.buffer = NULL;
+  E.mBuffer.maxBufferSize = 128;
+  E.mBuffer.buffer = malloc(E.mBuffer.maxBufferSize);
+  E.mBuffer.bufferSize = 0;
+  E.mBuffer.buffer[E.mBuffer.bufferSize] = '\0';
 
   E.modes = malloc(3 * sizeof(editorMode));
   E.modes[NORMAL_MODE].name = "Normal";

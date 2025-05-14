@@ -2,6 +2,7 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <stddef.h>
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
 #define _POSIX_C_SOURCE 200809L
@@ -54,7 +55,8 @@ typedef struct erow {
 // A struct to hold the buffer for the vim motions
 typedef struct motionBuffer {
   char *buffer;
-  unsigned int bufferSize;
+  size_t bufferSize;
+  size_t maxBufferSize;
 } motionBuffer;
 
 // A struct to hold all of the current configuration for the terminal.
