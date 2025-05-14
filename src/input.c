@@ -90,13 +90,14 @@ void editorProcessKeypressNormalMode() {
     break;
   // Goes into insert mode
   case 105:
-    vimMotionO();
+    E.currentMode = INSERT_MODE;
     break;
   // Insers a new row add goes into insert mode when pressing "o"
   case 111:
-    editorInsertNewline();
-    E.currentMode = INSERT_MODE;
+    vimMotionO();
     break;
+  case 100:
+
   // Saves the file
   case CTRL_KEY('s'):
     editorSave();

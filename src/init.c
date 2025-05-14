@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
-#include "init.h"
 #include "data.h"
+#include "init.h"
 #include "terminal.h"
 
 void initEditor() {
@@ -17,6 +17,8 @@ void initEditor() {
   E.statusmsg[0] = '\0';
   E.statusmsg_time = 0;
 
+  E.mBuffer.buffer = NULL;
+
   E.modes = malloc(3 * sizeof(editorMode));
   E.modes[NORMAL_MODE].name = "Normal";
   E.modes[INSERT_MODE].name = "Insert";
@@ -24,6 +26,7 @@ void initEditor() {
 
   E.currentMode = 0;
 
-  if(getWindowSize(&E.screenrows, &E.screencols) == -1) die("getWindowSize");
+  if (getWindowSize(&E.screenrows, &E.screencols) == -1)
+    die("getWindowSize");
   E.screenrows -= 2;
 }
