@@ -16,25 +16,25 @@ void resetVimMotionBuffer() {
  * TODO: This should really be refactored at some point to make clearer if
  * statements.
  */
-void processVimMotionBuffer() {
+int processVimMotionBuffer() {
+  int hasExecutedMotion = 0;
   if (E.mBuffer.bufferSize == 1) {
     if (E.mBuffer.buffer[0] == 'o') {
       vimMotiono();
-
+      hasExecutedMotion = 1;
     } else if (E.mBuffer.buffer[0] == 'w') {
       vimMotionw(E.cx);
+      hasExecutedMotion = 1;
     }
-    resetVimMotionBuffer();
-  }
-  if (E.mBuffer.bufferSize == 2) {
+  } else if (E.mBuffer.bufferSize == 2) {
     if (E.mBuffer.buffer[0] == 'd') {
       if (E.mBuffer.buffer[1] == 'd') {
         vimMotiondd(E.cy);
+        hasExecutedMotion = 1;
       }
     }
-    resetVimMotionBuffer();
   }
-  editorRefreshScreen();
+  return hasExecutedMotion;
 }
 /*
  * This is a function for freeing and resetting the buffer.
@@ -85,6 +85,8 @@ void vimMotiono() {
 void vimMotiondd(int at) {
   editorDelRow(at);
   E.cx = 0;
+  if (E.cy > 0)
+    E.cy--;
   editorRefreshScreen();
 }
 

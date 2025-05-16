@@ -80,7 +80,11 @@ void editorMoveCursor(int key) {
 // returns.
 void editorProcessKeypressNormalMode() {
   if (E.mBuffer.bufferSize) {
-    processVimMotionBuffer();
+    if (processVimMotionBuffer() >= 1) {
+      resetVimMotionBuffer();
+      editorRefreshScreen();
+      return;
+    }
   }
 
   int c = editorReadKey();
