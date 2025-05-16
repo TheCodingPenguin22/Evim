@@ -2,8 +2,19 @@
 #include "data.h"
 #include "editor_operations.h"
 #include "output.h"
+#include "row_operations.h"
 #include <stdlib.h>
-#include <string.h>
+
+void processVimMotionBuffer() {
+  if (E.mBuffer.bufferSize == 2) {
+    if (E.mBuffer.buffer[0] == 'd') {
+      if (E.mBuffer.buffer[1] == 'd') {
+        vimMotionDD(E.cy);
+      }
+    }
+  }
+  editorRefreshScreen();
+}
 
 void freeVimMotionBuffer() {
   free(E.mBuffer.buffer);
@@ -31,10 +42,10 @@ void vimMotionO() {
   E.currentMode = INSERT_MODE;
 }
 
-void vimMotionDD() {
-  free(E.row[E.cy].chars);
-
-  memmove(&E.row[E.cy], &E.row[E.cy + 1],
-          sizeof(erow) * (E.numrows - E.cy - 1));
+void vimMotionDD(int at) {
+  editorDelRow(at);
+  E.cx = 0;
+  E.mBuffer.buffer[0] = '\0';
+  E.mBuffer.bufferSize = 0;
   editorRefreshScreen();
 }
