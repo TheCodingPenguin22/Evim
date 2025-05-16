@@ -96,10 +96,6 @@ void editorProcessKeypressNormalMode() {
   case 105:
     E.currentMode = INSERT_MODE;
     break;
-  // Insert 'd' into motionBuffer
-  case 100:
-    appendToVimMotionBuffer('d');
-    break;
   // Saves the file
   case CTRL_KEY('s'):
     editorSave();
@@ -139,7 +135,7 @@ void editorProcessKeypressNormalMode() {
     freeVimMotionBuffer();
     break;
   default:
-    editorProcessKeypressVimMotion(c);
+    appendToVimMotionBuffer(c);
     break;
   }
 }
@@ -205,13 +201,6 @@ void editorProcessKeypressCommandMode() {
   E.currentMode = NORMAL_MODE;
 }
 
-void editorProcessKeypressVimMotion(char c) {
-  switch (c) {
-  case 100:
-    appendToVimMotionBuffer('d');
-    break;
-  }
-}
 // Function for writing a promt to the status bar
 char *editorPrompt(char *promt) {
   size_t bufsize = 128;
