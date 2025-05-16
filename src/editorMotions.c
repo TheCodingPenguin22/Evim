@@ -19,15 +19,20 @@ void resetVimMotionBuffer() {
 void processVimMotionBuffer() {
   if (E.mBuffer.bufferSize == 1) {
     if (E.mBuffer.buffer[0] == 'o') {
-      vimMotionO();
+      vimMotiono();
+
+    } else if (E.mBuffer.buffer[0] == 'w') {
+      vimMotionw(E.cx);
     }
+    resetVimMotionBuffer();
   }
   if (E.mBuffer.bufferSize == 2) {
     if (E.mBuffer.buffer[0] == 'd') {
       if (E.mBuffer.buffer[1] == 'd') {
-        vimMotionDD(E.cy);
+        vimMotiondd(E.cy);
       }
     }
+    resetVimMotionBuffer();
   }
   editorRefreshScreen();
 }
@@ -68,19 +73,31 @@ void appendToVimMotionBuffer(char c) {
  * That motion simply inserts a new line after the current line and sets the
  * cursor to that line.
  */
-void vimMotionO() {
+void vimMotiono() {
   editorInsertNewline();
   E.currentMode = INSERT_MODE;
-  resetVimMotionBuffer();
 }
 /*
  * This function is for the vim motion 'dd' which deletes the current line.
  *
  *
  */
-void vimMotionDD(int at) {
+void vimMotiondd(int at) {
   editorDelRow(at);
   E.cx = 0;
-  resetVimMotionBuffer();
   editorRefreshScreen();
+}
+
+void vimMotionw(int at) {
+  char *posPtr = &E.row[E.cy].chars[at];
+
+  while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1]) {
+    if (*posPtr == ' ') {
+      E.cx = at;
+      return;
+    }
+    posPtr++;
+    at++;
+  }
+  E.cx = E.row[E.cy].rsize;
 }
