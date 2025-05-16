@@ -16,8 +16,9 @@
  *
  */
 
+void processVimMotionBuffer();
 void freeVimMotionBuffer();
 void appendToVimMotionBuffer(char c);
 void vimMotionO();
-void vimMotionDD();
+void vimMotionDD(int at);
 #endif
