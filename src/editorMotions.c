@@ -3,6 +3,7 @@
 #include "editor_operations.h"
 #include "output.h"
 #include "row_operations.h"
+#include <ctype.h>
 #include <stdlib.h>
 
 void resetVimMotionBuffer() {
@@ -92,8 +93,11 @@ void vimMotiondd(int at) {
 
 void vimMotionw(int at) {
   char *posPtr = &E.row[E.cy].chars[at];
-
-  while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1]) {
+  /*
+   * TODO: Fix seg fault when pressing w at last char of row
+   */
+  while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
+         !iscntrl(*posPtr)) {
     if (*posPtr == ' ') {
       E.cx = at;
       return;
