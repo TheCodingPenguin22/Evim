@@ -89,6 +89,18 @@ void editorProcessKeypressNormalMode() {
 
   switch (c) {
   // Goes into command mode when pressing ':'
+  case 1000:
+    editorMoveCursor(ARROW_LEFT);
+    break;
+  case 1003:
+    editorMoveCursor(ARROW_DOWN);
+    break;
+  case 1002:
+    editorMoveCursor(ARROW_UP);
+    break;
+  case 1001:
+    editorMoveCursor(ARROW_RIGHT);
+    break;
   case 58:
     E.currentMode = COMMAND_MODE;
     break;

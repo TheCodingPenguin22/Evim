@@ -21,6 +21,11 @@ void resetVimMotionBuffer();
 void processVimMotionBuffer();
 void freeVimMotionBuffer();
 void appendToVimMotionBuffer(char c);
-void vimMotionO();
-void vimMotionDD(int at);
+
+/*
+ * ALL VIM MOTIONS GO HERE!!!
+ */
+void vimMotiono();
+void vimMotiondd(int at);
+void vimMotionw(int at);
 #endif
