@@ -3,6 +3,7 @@
 #include "editor_operations.h"
 #include "output.h"
 #include "row_operations.h"
+#include "terminal.h"
 #include <ctype.h>
 #include <stdlib.h>
 
@@ -32,6 +33,9 @@ int processVimMotionBuffer() {
       hasExecutedMotion = 1;
     } else if (E.mBuffer.buffer[0] == 'd') {
 
+    } else if (E.mBuffer.buffer[0] == 'b') {
+      vimMotionb(E.cx);
+      hasExecutedMotion = 1;
     } else {
       resetVimMotionBuffer();
     }
@@ -105,8 +109,9 @@ void vimMotionw(int at) {
   /*
    * TODO: Fix seg fault when pressing w at last char of row
    */
-  if (*posPtr + 1 != ' ') {
+  if (*posPtr + 1 != ' ' && *posPtr != E.row[E.cy].chars[E.row[E.cy].size]) {
     at++;
+    posPtr++;
   }
   while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
          !iscntrl(*posPtr)) {
@@ -118,4 +123,30 @@ void vimMotionw(int at) {
     at++;
   }
   E.cx = E.row[E.cy].rsize;
+}
+
+void vimMotionb(int at) {
+  char *posPtr = &E.row[E.cy].chars[at];
+
+  if (*posPtr == ' ' && *posPtr != 0) {
+    at--;
+    posPtr--;
+  } else if (*(posPtr - 1) == ' ' && *(posPtr - 2) > 0) {
+    at--;
+    posPtr--;
+  }
+
+  while (posPtr != &E.row[E.cy].chars[0]) {
+    if (*(posPtr - 1) == ' ') {
+      E.cx = at;
+      return;
+    }
+    posPtr--;
+    at--;
+  }
+
+  if (at == 0) {
+    E.cx = at;
+  }
+  editorSetStatusMessage("at: %d", at);
 }

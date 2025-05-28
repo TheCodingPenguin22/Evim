@@ -89,8 +89,6 @@ void editorProcessKeypressNormalMode() {
 
   int c = editorReadKey();
 
-  editorSetStatusMessage("Current keycode: %d", c);
-
   switch (c) {
   // Goes into command mode when pressing ':'
   case 1000:
