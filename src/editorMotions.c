@@ -26,6 +26,10 @@ int processVimMotionBuffer() {
     } else if (E.mBuffer.buffer[0] == 'w') {
       vimMotionw(E.cx);
       hasExecutedMotion = 1;
+    } else if (E.mBuffer.buffer[0] == 'd') {
+
+    } else {
+      resetVimMotionBuffer();
     }
   } else if (E.mBuffer.bufferSize == 2) {
     if (E.mBuffer.buffer[0] == 'd') {
