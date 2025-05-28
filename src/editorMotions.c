@@ -96,6 +96,9 @@ void vimMotionw(int at) {
   /*
    * TODO: Fix seg fault when pressing w at last char of row
    */
+  if (*posPtr + 1 != ' ') {
+    at++;
+  }
   while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
          !iscntrl(*posPtr)) {
     if (*posPtr == ' ') {
