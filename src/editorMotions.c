@@ -12,7 +12,11 @@ void resetVimMotionBuffer() {
 }
 /*
  * This is a function for processing the motion buffer.
- * Really simple since it is only parsing one char at a time
+ * Really simple since it is only parsing one char at a time.
+ *
+ * If the char that is in the buffer is not a char then it just clears the
+ * buffer, this is to prevent a situation where a user can enter 'bdd' for
+ * example. Then the 'dd' command whould not execute.
  *
  * TODO: This should really be refactored at some point to make clearer if
  * statements.
