@@ -83,6 +83,7 @@ void appendToVimMotionBuffer(char c) {
  * cursor to that line.
  */
 void vimMotiono() {
+  E.cx = E.row[E.cy].size;
   editorInsertNewline();
   E.currentMode = INSERT_MODE;
 }
