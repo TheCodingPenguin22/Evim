@@ -82,10 +82,10 @@ void editorProcessKeypressNormalMode() {
   if (E.mBuffer.bufferSize) {
     if (processVimMotionBuffer() >= 1) {
       resetVimMotionBuffer();
-      editorRefreshScreen();
       return;
     }
   }
+  editorRefreshScreen();
 
   int c = editorReadKey();
 
