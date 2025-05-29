@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include "append_buffer.h"
+#include "data.h"
 #include "output.h"
 #include "row_operations.h"
 
@@ -101,7 +102,12 @@ void editorDrawRows(struct abuf *ab) {
   }
 }
 
-// Draws the status bar to the buffer.
+/* Draws the status bar to the buffer.
+ *
+ * It also changes the color of the status bar depending on the mode we are in.
+ * This is code thourgh escape codes.
+ *
+ */
 void editorDrawStatusBar(struct abuf *ab) {
   // Sets the color to blue for normal mode
   if (E.currentMode == NORMAL_MODE) {
@@ -196,6 +202,21 @@ void editorRefreshScreen() {
   snprintf(buff, sizeof(buff), "\x1b[%d;%dH", (E.cy - E.rowoff) + 1,
            (E.rx - E.coloff) + 1);
   abAppend(&ab, buff, strlen(buff));
+
+  // Sets the look of the cursor based on which mode the user is in.
+  switch (E.currentMode) {
+  case NORMAL_MODE:
+    abAppend(&ab, "\x1b[1 q", 5);
+    break;
+  case INSERT_MODE:
+    abAppend(&ab, "\x1b[0 q", 5);
+    break;
+  case DELETE_MODE:
+    abAppend(&ab, "\x1b[3 q", 5);
+    break;
+  default:
+    abAppend(&ab, "\x1b[1 q", 5);
+  }
 
   // Shows the cursor again
   abAppend(&ab, "\x1b[?25h", 6);

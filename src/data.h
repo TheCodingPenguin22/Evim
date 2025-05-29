@@ -36,6 +36,7 @@ enum modes {
   NORMAL_MODE = 0,
   INSERT_MODE,
   COMMAND_MODE,
+  DELETE_MODE,
 };
 
 /*** data ***/
