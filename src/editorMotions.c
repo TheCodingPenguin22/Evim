@@ -3,7 +3,6 @@
 #include "editor_operations.h"
 #include "output.h"
 #include "row_operations.h"
-#include "terminal.h"
 #include <ctype.h>
 #include <stdlib.h>
 
@@ -25,18 +24,22 @@ void resetVimMotionBuffer() {
 int processVimMotionBuffer() {
   int hasExecutedMotion = 0;
   if (E.mBuffer.bufferSize == 1) {
-    if (E.mBuffer.buffer[0] == 'o') {
+    switch (E.mBuffer.buffer[0]) {
+    case 'o':
       vimMotiono();
       hasExecutedMotion = 1;
-    } else if (E.mBuffer.buffer[0] == 'w') {
+      break;
+    case 'w':
       vimMotionw(E.cx);
       hasExecutedMotion = 1;
-    } else if (E.mBuffer.buffer[0] == 'd') {
-
-    } else if (E.mBuffer.buffer[0] == 'b') {
+      break;
+    case 'b':
       vimMotionb(E.cx);
       hasExecutedMotion = 1;
-    } else {
+      break;
+    case 'd':
+      break;
+    default:
       resetVimMotionBuffer();
     }
   } else if (E.mBuffer.bufferSize == 2) {
@@ -44,7 +47,11 @@ int processVimMotionBuffer() {
       if (E.mBuffer.buffer[1] == 'd') {
         vimMotiondd(E.cy);
         hasExecutedMotion = 1;
+      } else {
+        resetVimMotionBuffer();
       }
+    } else {
+      resetVimMotionBuffer();
     }
   }
   return hasExecutedMotion;
@@ -85,10 +92,16 @@ void appendToVimMotionBuffer(char c) {
  * This is a function for the vim motion 'o'.
  * That motion simply inserts a new line after the current line and sets the
  * cursor to that line.
+ * If there are no rows just enter insert mode.
+ *
  */
 void vimMotiono() {
-  E.cx = E.row[E.cy].size;
-  editorInsertNewline();
+
+  if (E.row != NULL) {
+    E.cx = E.row[E.cy].size;
+    editorInsertNewline();
+  }
+
   E.currentMode = INSERT_MODE;
 }
 /*
@@ -105,48 +118,65 @@ void vimMotiondd(int at) {
 }
 
 void vimMotionw(int at) {
-  char *posPtr = &E.row[E.cy].chars[at];
-  /*
-   * TODO: Fix seg fault when pressing w at last char of row
-   */
-  if (*posPtr + 1 != ' ' && *posPtr != E.row[E.cy].chars[E.row[E.cy].size]) {
-    at++;
-    posPtr++;
-  }
-  while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
-         !iscntrl(*posPtr)) {
-    if (*posPtr == ' ') {
-      E.cx = at;
-      return;
+
+  if (E.row != NULL) {
+    char *posPtr = &E.row[E.cy].chars[at];
+    char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+    /*
+     * TODO: Fix seg fault when pressing w at last char of row
+     */
+    if (*posPtr + 1 != ' ' && *posPtr != lastCharOfRow) {
+      at++;
+      posPtr++;
     }
-    posPtr++;
-    at++;
+    if (*posPtr == lastCharOfRow && E.cy < E.numrows - 1) {
+      E.cy++;
+      at = 0;
+      posPtr = &E.row[E.cy].chars[at];
+    }
+    while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
+           !iscntrl(*posPtr)) {
+      if (*posPtr == ' ') {
+        E.cx = at;
+        return;
+      }
+      posPtr++;
+      at++;
+    }
+    E.cx = E.row[E.cy].rsize;
   }
-  E.cx = E.row[E.cy].rsize;
 }
 
 void vimMotionb(int at) {
-  char *posPtr = &E.row[E.cy].chars[at];
+  if (E.row != NULL) {
 
-  if (*posPtr == ' ' && *posPtr != 0) {
-    at--;
-    posPtr--;
-  } else if (*(posPtr - 1) == ' ' && *(posPtr - 2) > 0) {
-    at--;
-    posPtr--;
-  }
+    char *posPtr = &E.row[E.cy].chars[at];
 
-  while (posPtr != &E.row[E.cy].chars[0]) {
-    if (*(posPtr - 1) == ' ') {
-      E.cx = at;
-      return;
+    if (*posPtr == ' ' && *posPtr != 0) {
+      at--;
+      posPtr--;
+    } else if (*(posPtr - 1) == ' ' && *(posPtr - 2) > 0) {
+      at--;
+      posPtr--;
     }
-    posPtr--;
-    at--;
-  }
+    if (at == 0 && E.cy > 0) {
+      E.cy--;
+      at = E.row[E.cy].size;
+      E.cx = at;
+    } else {
 
-  if (at == 0) {
-    E.cx = at;
+      while (posPtr != &E.row[E.cy].chars[0]) {
+        if (*(posPtr - 1) == ' ') {
+          E.cx = at;
+          return;
+        }
+        posPtr--;
+        at--;
+      }
+
+      if (at == 0) {
+        E.cx = at;
+      }
+    }
   }
-  editorSetStatusMessage("at: %d", at);
 }
