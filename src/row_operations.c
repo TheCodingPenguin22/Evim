@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
@@ -131,4 +132,17 @@ void editorRowAppendString(erow *row, char *s, size_t len) {
   row->chars[row->size] = '\0';
   editorUpdateRow(row);
   E.dirty++;
+}
+
+int editorCheckIfRowIsBlank(erow *row, size_t len) {
+  char *posPtr = &row->chars[0];
+
+  while (*posPtr != row->chars[len] && !iscntrl(*posPtr)) {
+    if (*posPtr != ' ') {
+      return 0;
+    }
+    posPtr++;
+  }
+
+  return 1;
 }

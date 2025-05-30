@@ -41,6 +41,14 @@ int processVimMotionBuffer() {
     case 'd':
       E.isDeleting = 1;
       break;
+    case 'I':
+      vimMotionI();
+      hasExecutedMotion = 1;
+      break;
+    case 'A':
+      vimMotionA();
+      hasExecutedMotion = 1;
+      break;
     default:
       resetVimMotionBuffer();
     }
@@ -122,63 +130,88 @@ void vimMotiondd(int at) {
 void vimMotionw(int at) {
 
   if (E.row != NULL) {
-    char *posPtr = &E.row[E.cy].chars[at];
-    char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
-    /*
-     * TODO: Fix seg fault when pressing w at last char of row
-     */
-    if (*posPtr + 1 != ' ' && *posPtr != lastCharOfRow) {
-      at++;
-      posPtr++;
-    }
-    if (*posPtr == lastCharOfRow && E.cy < E.numrows - 1) {
-      E.cy++;
-      at = 0;
-      posPtr = &E.row[E.cy].chars[at];
-    }
-    while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
-           !iscntrl(*posPtr)) {
-      if (*posPtr == ' ') {
-        E.cx = at;
-        return;
+    if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+      char *posPtr = &E.row[E.cy].chars[at];
+      char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+      /*
+       * TODO: Fix seg fault when pressing w at last char of row
+       */
+      if (*posPtr + 1 != ' ' && *posPtr != lastCharOfRow) {
+        at++;
+        posPtr++;
       }
-      posPtr++;
-      at++;
+      if (*posPtr == lastCharOfRow && E.cy < E.numrows - 1) {
+        E.cy++;
+        at = 0;
+        posPtr = &E.row[E.cy].chars[at];
+      }
+      while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
+             !iscntrl(*posPtr)) {
+        if (*posPtr == ' ') {
+          E.cx = at;
+          return;
+        }
+        posPtr++;
+        at++;
+      }
+      E.cx = E.row[E.cy].rsize;
     }
-    E.cx = E.row[E.cy].rsize;
   }
 }
 
 void vimMotionb(int at) {
   if (E.row != NULL) {
+    if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
 
-    char *posPtr = &E.row[E.cy].chars[at];
+      char *posPtr = &E.row[E.cy].chars[at];
 
-    if (*posPtr == ' ' && *posPtr != 0) {
-      at--;
-      posPtr--;
-    } else if (*(posPtr - 1) == ' ' && *(posPtr - 2) > 0) {
-      at--;
-      posPtr--;
-    }
-    if (at == 0 && E.cy > 0) {
-      E.cy--;
-      at = E.row[E.cy].size;
-      E.cx = at;
-    } else {
-
-      while (posPtr != &E.row[E.cy].chars[0]) {
-        if (*(posPtr - 1) == ' ') {
-          E.cx = at;
-          return;
-        }
-        posPtr--;
+      if (*posPtr == ' ' && *posPtr != 0) {
         at--;
+        posPtr--;
+      } else if (*(posPtr - 1) == ' ' && *(posPtr - 2) > 0) {
+        at--;
+        posPtr--;
       }
-
-      if (at == 0) {
+      if (at == 0 && E.cy > 0) {
+        E.cy--;
+        at = E.row[E.cy].size;
         E.cx = at;
+      } else {
+
+        while (posPtr != &E.row[E.cy].chars[0]) {
+          if (*(posPtr - 1) == ' ') {
+            E.cx = at;
+            return;
+          }
+          posPtr--;
+          at--;
+        }
+
+        if (at == 0) {
+          E.cx = at;
+        }
       }
     }
   }
 }
+
+void vimMotionI() {
+  if (E.row != NULL) {
+    if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+      E.currentMode = INSERT_MODE;
+      return;
+
+      int at = 0;
+      char *posPtr = &E.row[E.cy].chars[at];
+
+      while (*posPtr == ' ') {
+        posPtr++;
+        at++;
+      }
+
+      E.cx = at;
+    }
+  }
+}
+
+void vimMotionA() {}
