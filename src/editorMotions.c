@@ -198,8 +198,6 @@ void vimMotionb(int at) {
 void vimMotionI() {
   if (E.row != NULL) {
     if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
-      E.currentMode = INSERT_MODE;
-      return;
 
       int at = 0;
       char *posPtr = &E.row[E.cy].chars[at];
@@ -212,6 +210,27 @@ void vimMotionI() {
       E.cx = at;
     }
   }
+  E.currentMode = INSERT_MODE;
 }
 
-void vimMotionA() {}
+void vimMotionA() {
+  if (E.row != NULL) {
+    if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+
+      int at = E.row[E.cy].size;
+      char *posPtr = &E.row[E.cy].chars[at];
+
+      while (at != 0) {
+        if (*posPtr != ' ' || iscntrl(*posPtr)) {
+          E.cx = at;
+          E.currentMode = INSERT_MODE;
+          return;
+        }
+        at--;
+        posPtr--;
+      }
+    }
+  }
+
+  E.currentMode = INSERT_MODE;
+}
