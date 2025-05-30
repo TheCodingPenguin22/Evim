@@ -220,15 +220,11 @@ void vimMotionA() {
       int at = E.row[E.cy].size;
       char *posPtr = &E.row[E.cy].chars[at];
 
-      while (at != 0) {
-        if (*posPtr != ' ' || iscntrl(*posPtr)) {
-          E.cx = at;
-          E.currentMode = INSERT_MODE;
-          return;
-        }
+      while (*posPtr == ' ') {
         at--;
         posPtr--;
       }
+      E.cx = at;
     }
   }
 
