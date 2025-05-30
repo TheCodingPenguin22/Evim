@@ -204,18 +204,19 @@ void editorRefreshScreen() {
   abAppend(&ab, buff, strlen(buff));
 
   // Sets the look of the cursor based on which mode the user is in.
-  switch (E.currentMode) {
-  case NORMAL_MODE:
-    abAppend(&ab, "\x1b[1 q", 5);
-    break;
-  case INSERT_MODE:
-    abAppend(&ab, "\x1b[0 q", 5);
-    break;
-  case DELETE_MODE:
+  if (E.isDeleting == 1) {
     abAppend(&ab, "\x1b[3 q", 5);
-    break;
-  default:
-    abAppend(&ab, "\x1b[1 q", 5);
+  } else {
+    switch (E.currentMode) {
+    case NORMAL_MODE:
+      abAppend(&ab, "\x1b[1 q", 5);
+      break;
+    case INSERT_MODE:
+      abAppend(&ab, "\x1b[0 q", 5);
+      break;
+    default:
+      abAppend(&ab, "\x1b[1 q", 5);
+    }
   }
 
   // Shows the cursor again

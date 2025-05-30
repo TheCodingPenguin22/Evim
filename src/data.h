@@ -36,7 +36,6 @@ enum modes {
   NORMAL_MODE = 0,
   INSERT_MODE,
   COMMAND_MODE,
-  DELETE_MODE,
 };
 
 /*** data ***/
@@ -78,6 +77,7 @@ struct editorConfig {
   editorMode *modes;
   int currentMode;
   struct motionBuffer mBuffer;
+  int isDeleting;
 };
 
 struct abuf {
