@@ -16,6 +16,7 @@ void initEditor() {
   E.filename = NULL;
   E.statusmsg[0] = '\0';
   E.statusmsg_time = 0;
+  E.isDeleting = 0;
 
   E.mBuffer.maxBufferSize = 128;
   E.mBuffer.buffer = malloc(E.mBuffer.maxBufferSize);

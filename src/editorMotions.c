@@ -9,6 +9,7 @@
 void resetVimMotionBuffer() {
   E.mBuffer.buffer[0] = '\0';
   E.mBuffer.bufferSize = 0;
+  E.isDeleting = 0;
 }
 /*
  * This is a function for processing the motion buffer.
@@ -38,6 +39,7 @@ int processVimMotionBuffer() {
       hasExecutedMotion = 1;
       break;
     case 'd':
+      E.isDeleting = 1;
       break;
     default:
       resetVimMotionBuffer();

@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
   while (1) {
     editorRefreshScreen();
-    if (E.currentMode == NORMAL_MODE || E.currentMode == DELETE_MODE)
+    if (E.currentMode == NORMAL_MODE)
       editorProcessKeypressNormalMode();
     if (E.currentMode == INSERT_MODE)
       editorProcessKeypressInserMode();
