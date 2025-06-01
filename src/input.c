@@ -89,6 +89,7 @@ void editorProcessKeypressNormalMode() {
 
   int c = editorReadKey();
 
+  editorSetStatusMessage("char key: %d", c);
   switch (c) {
   // Goes into command mode when pressing ':'
   case 1000:
@@ -107,7 +108,16 @@ void editorProcessKeypressNormalMode() {
     E.currentMode = COMMAND_MODE;
     break;
   // Goes into insert mode
+  // 105 == i
   case 105:
+    E.currentMode = INSERT_MODE;
+    break;
+  // 97 == a
+  case 97:
+    if (E.cx != E.row[E.cy].size) {
+
+      editorMoveCursor(ARROW_RIGHT);
+    }
     E.currentMode = INSERT_MODE;
     break;
   // Saves the file
