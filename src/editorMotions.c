@@ -41,12 +41,20 @@ int processVimMotionBuffer() {
     case 'd':
       E.isDeleting = 1;
       break;
+    case 'e':
+      vimMotione(E.cx);
+      hasExecutedMotion = 1;
+      break;
     case 'I':
       vimMotionI();
       hasExecutedMotion = 1;
       break;
     case 'A':
       vimMotionA();
+      hasExecutedMotion = 1;
+      break;
+    case 'G':
+      vimMotionG();
       hasExecutedMotion = 1;
       break;
     default:
@@ -135,7 +143,7 @@ void vimMotionw(int at) {
       char *posPtr = &E.row[E.cy].chars[at];
       char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
-      if (*posPtr + 1 != ' ' && *posPtr != lastCharOfRow) {
+      if (*(posPtr + 1) != ' ' && *posPtr != lastCharOfRow) {
         at++;
         posPtr++;
       }
@@ -159,9 +167,42 @@ void vimMotionw(int at) {
 }
 
 // Sets the cursor to the last char of the current word.
-void vimMotione(int at) {}
+void vimMotione(int at) {
+  if (E.row != NULL &&
+      !editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+    char *posPtr = &E.row[E.cy].chars[at];
+    char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
-// Sets the cursor to the start of the word that comes before the current word.
+    if (*(posPtr + 1) == ' ') {
+      at++;
+      posPtr++;
+      while (*posPtr == ' ') {
+        if (*posPtr == lastCharOfRow) {
+          return;
+        }
+        at++;
+        posPtr++;
+      }
+    }
+
+    while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size] &&
+           !iscntrl(*posPtr)) {
+      if (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
+        E.cx = at;
+        editorSetStatusMessage("e successfull");
+        return;
+      }
+      at++;
+      posPtr++;
+    }
+    editorSetStatusMessage("e unsuccessfull, posPtr: %c", *posPtr);
+    return;
+  }
+  editorSetStatusMessage("first if false");
+}
+
+// Sets the cursor to the start of the word that comes before the current
+// word.
 void vimMotionb(int at) {
   if (E.row != NULL) {
     if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
@@ -234,4 +275,11 @@ void vimMotionA() {
   }
 
   E.currentMode = INSERT_MODE;
+}
+
+// Sets the cursor to the end of the file
+void vimMotionG() {
+  if (E.row != NULL) {
+    E.cy = E.numrows - 1;
+  }
 }

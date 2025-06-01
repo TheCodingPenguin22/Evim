@@ -32,5 +32,6 @@ void vimMotione(int at);
 void vimMotionb(int at);
 void vimMotionI();
 void vimMotionA();
+void vimMotionG();
 
 #endif
