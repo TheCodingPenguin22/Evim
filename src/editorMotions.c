@@ -226,15 +226,16 @@ void vimMotionb(int at) {
 
       char *posPtr = &E.row[E.cy].chars[at];
 
-      if (at == 0 && E.cy > 0) {
+      if (at - 1 < 0 && E.cy > 0) {
         E.cy--;
         at = E.row[E.cy].size;
-        E.cx = at;
+        posPtr = &E.row[E.cy].chars[at];
       }
-      if (*(posPtr - 1) == ' ') {
+
+      if (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
         at--;
         posPtr--;
-        while (*posPtr == ' ') {
+        while (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
           if (at == 0) {
             return;
           }
