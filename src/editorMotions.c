@@ -127,7 +127,7 @@ void vimMotiondd(int at) {
   editorRefreshScreen();
 }
 
-// Sets the cursor to the end of the current word.
+// Sets the cursor to the empty space after the current word.
 void vimMotionw(int at) {
 
   if (E.row != NULL) {
@@ -157,6 +157,9 @@ void vimMotionw(int at) {
     }
   }
 }
+
+// Sets the cursor to the last char of the current word.
+void vimMotione(int at) {}
 
 // Sets the cursor to the start of the word that comes before the current word.
 void vimMotionb(int at) {

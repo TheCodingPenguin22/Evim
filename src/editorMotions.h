@@ -28,6 +28,7 @@ void appendToVimMotionBuffer(char c);
 void vimMotiono();
 void vimMotiondd(int at);
 void vimMotionw(int at);
+void vimMotione(int at);
 void vimMotionb(int at);
 void vimMotionI();
 void vimMotionA();
