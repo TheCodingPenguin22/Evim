@@ -132,7 +132,6 @@ void vimMotiondd(int at) {
   E.cx = 0;
   if (E.cy > 0)
     E.cy--;
-  editorRefreshScreen();
 }
 
 // Sets the cursor to the empty space after the current word.
@@ -143,27 +142,39 @@ void vimMotionw(int at) {
       char *posPtr = &E.row[E.cy].chars[at];
       char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
-      if (*posPtr == ' ') {
+      if (*posPtr == ' ' || iscntrl(*posPtr)) {
         at++;
         posPtr++;
-        while (*posPtr == ' ') {
-          if (*posPtr == lastCharOfRow) {
+        while (*posPtr == ' ' || iscntrl(*posPtr)) {
+          if (*posPtr == lastCharOfRow && E.cy + 1 < E.numrows) {
+
+            E.cy++;
+            at = 0;
+
+            posPtr = &E.row[E.cy].chars[at];
+            lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+          } else if (*posPtr == lastCharOfRow) {
+            editorSetStatusMessage("1 posPtr: %c", *posPtr);
             return;
           }
           at++;
           posPtr++;
         }
       }
-      while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
-             !iscntrl(*posPtr)) {
+
+      while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size]) {
+
         if (*posPtr == ' ') {
           E.cx = at;
+
+          editorSetStatusMessage("2 posPtr: %c", *posPtr);
           return;
         }
         posPtr++;
         at++;
       }
       E.cx = E.row[E.cy].rsize;
+      editorSetStatusMessage("3 posPtr: %c", *posPtr);
     }
   }
 }
@@ -174,6 +185,13 @@ void vimMotione(int at) {
       !editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
     char *posPtr = &E.row[E.cy].chars[at];
     char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+
+    if (*(posPtr + 1) == lastCharOfRow && E.cy + 1 < E.numrows) {
+      E.cy++;
+      at = 0;
+      posPtr = &E.row[E.cy].chars[at];
+      lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+    }
 
     if (*(posPtr + 1) == ' ') {
       at++;
@@ -208,31 +226,34 @@ void vimMotionb(int at) {
 
       char *posPtr = &E.row[E.cy].chars[at];
 
-      if (*posPtr == ' ' && *posPtr != 0) {
-        at--;
-        posPtr--;
-      } else if (*(posPtr - 1) == ' ' && *(posPtr - 2) > 0) {
-        at--;
-        posPtr--;
-      }
       if (at == 0 && E.cy > 0) {
         E.cy--;
         at = E.row[E.cy].size;
         E.cx = at;
-      } else {
-
-        while (posPtr != &E.row[E.cy].chars[0]) {
-          if (*(posPtr - 1) == ' ') {
-            E.cx = at;
+      }
+      if (*(posPtr - 1) == ' ') {
+        at--;
+        posPtr--;
+        while (*posPtr == ' ') {
+          if (at == 0) {
             return;
           }
-          posPtr--;
           at--;
+          posPtr--;
         }
+      }
 
-        if (at == 0) {
+      while (posPtr != &E.row[E.cy].chars[0]) {
+        if (*(posPtr - 1) == ' ') {
           E.cx = at;
+          return;
         }
+        posPtr--;
+        at--;
+      }
+
+      if (at == 0) {
+        E.cx = at;
       }
     }
   }
