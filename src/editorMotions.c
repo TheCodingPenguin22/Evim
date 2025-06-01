@@ -143,14 +143,16 @@ void vimMotionw(int at) {
       char *posPtr = &E.row[E.cy].chars[at];
       char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
-      if (*(posPtr + 1) != ' ' && *posPtr != lastCharOfRow) {
+      if (*posPtr == ' ') {
         at++;
         posPtr++;
-      }
-      if (*posPtr == lastCharOfRow && E.cy < E.numrows - 1) {
-        E.cy++;
-        at = 0;
-        posPtr = &E.row[E.cy].chars[at];
+        while (*posPtr == ' ') {
+          if (*posPtr == lastCharOfRow) {
+            return;
+          }
+          at++;
+          posPtr++;
+        }
       }
       while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size - 1] &&
              !iscntrl(*posPtr)) {
