@@ -127,15 +127,14 @@ void vimMotiondd(int at) {
   editorRefreshScreen();
 }
 
+// Sets the cursor to the end of the current word.
 void vimMotionw(int at) {
 
   if (E.row != NULL) {
     if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
       char *posPtr = &E.row[E.cy].chars[at];
       char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
-      /*
-       * TODO: Fix seg fault when pressing w at last char of row
-       */
+
       if (*posPtr + 1 != ' ' && *posPtr != lastCharOfRow) {
         at++;
         posPtr++;
@@ -159,6 +158,7 @@ void vimMotionw(int at) {
   }
 }
 
+// Sets the cursor to the start of the word that comes before the current word.
 void vimMotionb(int at) {
   if (E.row != NULL) {
     if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
@@ -195,6 +195,7 @@ void vimMotionb(int at) {
   }
 }
 
+// Sets the cursor at the first char in the current row.
 void vimMotionI() {
   if (E.row != NULL) {
     if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
@@ -213,6 +214,7 @@ void vimMotionI() {
   E.currentMode = INSERT_MODE;
 }
 
+// Sets the cursor at the last char in the current row.
 void vimMotionA() {
   if (E.row != NULL) {
     if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {

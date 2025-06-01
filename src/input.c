@@ -112,10 +112,10 @@ void editorProcessKeypressNormalMode() {
   case 105:
     E.currentMode = INSERT_MODE;
     break;
+  // Also goes into insert mode but sets the cursor behind the current char.
   // 97 == a
   case 97:
     if (E.cx != E.row[E.cy].size) {
-
       editorMoveCursor(ARROW_RIGHT);
     }
     E.currentMode = INSERT_MODE;
@@ -154,6 +154,7 @@ void editorProcessKeypressNormalMode() {
     }
   } break;
 
+  // Frees the motion input buffer if the escape key is pressed.
   case CTRL_KEY('l'):
   case '\x1b':
     freeVimMotionBuffer();
@@ -164,6 +165,7 @@ void editorProcessKeypressNormalMode() {
   }
 }
 
+// Handels key input when in insert mode.
 void editorProcessKeypressInserMode() {
   editorRefreshScreen();
   int c = editorReadKey();
@@ -193,6 +195,11 @@ void editorProcessKeypressInserMode() {
   }
 }
 
+// Handels key input when in command mode.
+
+// There is not a lot to handle, it just appends to the command buffer,
+// exits if user presses esc and removes the char before the cursor when
+// pressed backspace.
 void editorProcessKeypressCommandMode() {
   char *command = editorPrompt(":%s");
   if (command == NULL) {
@@ -238,6 +245,7 @@ char *editorPrompt(char *promt) {
     editorRefreshScreen();
 
     int c = editorReadKey();
+
     if (c == DEL_KEY || c == CTRL_KEY('h') || c == BACKSPACE) {
       if (buflen != 0)
         buf[--buflen] = '\0';
