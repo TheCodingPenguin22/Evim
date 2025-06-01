@@ -191,16 +191,13 @@ void vimMotione(int at) {
            !iscntrl(*posPtr)) {
       if (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
         E.cx = at;
-        editorSetStatusMessage("e successfull");
         return;
       }
       at++;
       posPtr++;
     }
-    editorSetStatusMessage("e unsuccessfull, posPtr: %c", *posPtr);
     return;
   }
-  editorSetStatusMessage("first if false");
 }
 
 // Sets the cursor to the start of the word that comes before the current
