@@ -135,65 +135,47 @@ void vimMotiondd(int at) {
 }
 
 // Sets the cursor to the empty space after the current word.
-// :param int at -- The current E pos of the cursor.
 void vimMotionw(int at) {
-  // Returns if the cursor is on a row that does not exist
-  // or if the whole row struct is NULL.
-  if (E.cy >= E.numrows || E.row == NULL) {
-    return;
-  }
 
-  // Row needs to contain something in order to be traversed.
-  if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
-    // Sets the pointer to the current char the cursor is at.
-    char *posPtr = &E.row[E.cy].chars[at];
+  if (E.row != NULL) {
+    if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+      char *posPtr = &E.row[E.cy].chars[at];
+      char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
-    // Gets the last variable of the row.
-    // Makes checking against it easier.
-    char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
-
-    // While the cursor is at a blank space or a controll character.
-    // This puts the cursor at the start of the next word.
-    while (*posPtr == ' ' || iscntrl(*posPtr)) {
-
-      // Goes to the next row if posPtr is at the end.
-      editorGoToNextRowIfAtEnd(*posPtr, &lastCharOfRow, &at);
-
-      // Sets at to 0 if the row is empty.
-      // It also returns, because if the
-      // row is empty then there is no next word to go to.
-      if (editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
-        at = 0;
-      }
-
-      // If the posPtr is at the end of the row,
-      // then is just breaks.
-      if (*posPtr == lastCharOfRow) {
-        break;
-      }
-
-      at++;
-      posPtr++;
-    }
-
-    // While the posPtr is not at the end of the current row.
-    while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size]) {
-      // Stops if the posPtr is a blank space.
-      // This is what makes the motion work.
       if (*posPtr == ' ' || iscntrl(*posPtr)) {
-        break;
-      }
-      posPtr++;
-      at++;
-    }
-    // Sets the cursor position to the current at.
-    E.cx = at;
+        at++;
+        posPtr++;
+        while (*posPtr == ' ' || iscntrl(*posPtr)) {
+          if (*posPtr == lastCharOfRow && E.cy + 1 < E.numrows) {
 
-    // If the row is blank then it sets x to 0;
-    // This is to prevent a situation where the cursor is beyond the end of a
-    // row.
-  } else {
-    E.cx = 0;
+            E.cy++;
+            at = 0;
+
+            posPtr = &E.row[E.cy].chars[at];
+            lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+          } else if (*posPtr == lastCharOfRow) {
+            editorSetStatusMessage("1 posPtr: %c", *posPtr);
+            return;
+          }
+          at++;
+          posPtr++;
+        }
+      }
+
+      while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size]) {
+
+        if (*posPtr == ' ') {
+          E.cx = at;
+
+          editorSetStatusMessage("2 posPtr: %c", *posPtr);
+          return;
+        }
+        posPtr++;
+        at++;
+      }
+      E.cx = E.row[E.cy].rsize;
+      editorSetStatusMessage("3 posPtr: %c", *posPtr);
+    }
   }
 }
 

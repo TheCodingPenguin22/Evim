@@ -125,6 +125,13 @@ void editorDelRow(int at) {
   E.dirty++;
 }
 
+/*
+ * This function appends a string to the end of a given row.
+ *
+ *  :param erow *row -- Pointer to the current row.
+ *  :param char *s -- The string that is getting appended.
+ *  :param size_t len -- The length of the current row.
+ * */
 void editorRowAppendString(erow *row, char *s, size_t len) {
   row->chars = realloc(row->chars, row->size + len + 1);
   memcpy(&row->chars[row->size], s, len);
@@ -134,6 +141,12 @@ void editorRowAppendString(erow *row, char *s, size_t len) {
   E.dirty++;
 }
 
+/*
+ * This function checks if a given row is blank.
+ *
+ *  :param erow *row -- A pointer to the current row.
+ *  :param size_t len -- The length of the current row.
+ * */
 int editorCheckIfRowIsBlank(erow *row, size_t len) {
   char *posPtr = &row->chars[0];
 
@@ -145,4 +158,29 @@ int editorCheckIfRowIsBlank(erow *row, size_t len) {
   }
 
   return 1;
+}
+
+/*
+ * This function checks if the cursor is at the end of the row
+ * and if it is and the current row + 1 does not exceed the current
+ * amount of rows that exists then it increments the y value and sets the
+ * current at to 0;
+ *
+ *  :param char posPtr -- the current position of the pointer that is beging
+ * incremented.
+ * :param char *lastCharOfRow -- The last character in the current
+ * row.
+ * :param int *at -- the current cursor position.
+ *
+ */
+void editorGoToNextRowIfAtEnd(char posPtr, char *lastCharOfRow, int *at) {
+  if (posPtr == *lastCharOfRow && E.cy + 1 < E.numrows) {
+
+    E.cy++;
+    *at = 0;
+
+    // Resets the pointer and lastCharOfRow.
+    posPtr = E.row[E.cy].chars[*at];
+    *lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
+  }
 }
