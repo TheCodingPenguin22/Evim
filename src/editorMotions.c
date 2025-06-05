@@ -194,32 +194,22 @@ void vimMotionw(int at) {
 
 // Sets the cursor to the last char of the current word.
 void vimMotione(int at) {
-  if (E.row != NULL &&
-      !editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+  if (E.row != NULL) {
     char *posPtr = &E.row[E.cy].chars[at];
     char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
-    if (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
+    while (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
+      editorGoToNextRowIfAtEnd(*posPtr, &lastCharOfRow, &at);
+      if (editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
+        at = 0;
+      }
+
+      if (*posPtr == lastCharOfRow)
+        break;
       at++;
       posPtr++;
-      while (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
-        if (*posPtr == lastCharOfRow && E.cy + 1 < E.numrows) {
-
-          E.cy++;
-          at = 0;
-
-          posPtr = &E.row[E.cy].chars[at];
-          lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
-        } else if (*posPtr == lastCharOfRow) {
-          editorSetStatusMessage("1 posPtr: %c", *posPtr);
-          return;
-        }
-        at++;
-        posPtr++;
-      }
     }
-    while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size] &&
-           !iscntrl(*posPtr)) {
+    while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size]) {
       if (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
         E.cx = at;
         return;
@@ -227,7 +217,6 @@ void vimMotione(int at) {
       at++;
       posPtr++;
     }
-    return;
   }
 }
 
