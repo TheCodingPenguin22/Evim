@@ -240,40 +240,38 @@ void vimMotione(int at) {
 // word.
 void vimMotionb(int at) {
   if (E.row != NULL) {
-    if (!editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
 
-      char *posPtr = &E.row[E.cy].chars[at];
+    char *posPtr = &E.row[E.cy].chars[at];
 
-      if (at - 1 < 0 && E.cy > 0) {
-        E.cy--;
-        at = E.row[E.cy].size;
-        posPtr = &E.row[E.cy].chars[at];
-      }
+    if (at - 1 < 0 && E.cy > 0) {
+      E.cy--;
+      at = E.row[E.cy].size;
+      posPtr = &E.row[E.cy].chars[at];
+    }
 
-      if (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
-        at--;
-        posPtr--;
-        while (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
-          if (at == 0) {
-            return;
-          }
-          posPtr--;
-          at--;
-        }
-      }
-
-      while (posPtr != &E.row[E.cy].chars[0]) {
-        if (*(posPtr - 1) == ' ') {
-          E.cx = at;
+    if (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
+      at--;
+      posPtr--;
+      while (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
+        if (at == 0) {
           return;
         }
         posPtr--;
         at--;
       }
+    }
 
-      if (at == 0) {
+    while (posPtr != &E.row[E.cy].chars[0]) {
+      if (*(posPtr - 1) == ' ') {
         E.cx = at;
+        return;
       }
+      posPtr--;
+      at--;
+    }
+
+    if (at == 0) {
+      E.cx = at;
     }
   }
 }
