@@ -173,14 +173,12 @@ int editorCheckIfRowIsBlank(erow *row, size_t len) {
  * :param int *at -- the current cursor position.
  *
  */
-void editorGoToNextRowIfAtEnd(char posPtr, char *lastCharOfRow, int *at) {
-  if (posPtr == *lastCharOfRow && E.cy + 1 < E.numrows) {
+void editorGoToNextRowIfAtEnd(char **posPtr, char *lastCharOfRow, int *at) {
 
-    E.cy++;
-    *at = 0;
+  E.cy++;
+  *at = 0;
 
-    // Resets the pointer and lastCharOfRow.
-    posPtr = E.row[E.cy].chars[*at];
-    *lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
-  }
+  // Resets the pointer and lastCharOfRow.
+  *posPtr = &E.row[E.cy].chars[*at];
+  *lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 }

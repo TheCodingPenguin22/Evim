@@ -44,6 +44,6 @@ int editorCheckIfRowIsBlank(erow *row, size_t len);
  * :param int *at -- the current cursor position.
  *
  */
-void editorGoToNextRowIfAtEnd(char posPtr, char *lastCharOfRow, int *at);
+void editorGoToNextRowIfAtEnd(char **posPtr, char *lastCharOfRow, int *at);
 
 #endif

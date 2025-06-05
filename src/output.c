@@ -122,6 +122,8 @@ void editorDrawStatusBar(struct abuf *ab) {
   // And foreground color to black to see the text
   else if (E.currentMode == COMMAND_MODE) {
     abAppend(ab, "\x1b[30;107m", 9);
+  } else {
+    abAppend(ab, "\x1b[97;44m", 8);
   }
   char status[80], posstatus[80];
   // Calculates the length of the status bar string.

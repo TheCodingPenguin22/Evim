@@ -155,7 +155,10 @@ void vimMotionw(int at) {
   while (*posPtr == ' ' || iscntrl(*posPtr)) {
 
     // Goes to the next row if posPtr is at the end.
-    editorGoToNextRowIfAtEnd(*posPtr, &lastCharOfRow, &at);
+    if (*posPtr == lastCharOfRow && E.cy + 1 < E.numrows) {
+      editorGoToNextRowIfAtEnd(&posPtr, &lastCharOfRow, &at);
+      break;
+    }
 
     // Sets at to 0 if the row is empty.
     // It also returns, because if the
@@ -199,24 +202,30 @@ void vimMotione(int at) {
     char lastCharOfRow = E.row[E.cy].chars[E.row[E.cy].size];
 
     while (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
-      editorGoToNextRowIfAtEnd(*posPtr, &lastCharOfRow, &at);
+      if (*posPtr == lastCharOfRow && E.cy + 1 < E.numrows) {
+        editorGoToNextRowIfAtEnd(&posPtr, &lastCharOfRow, &at);
+        break;
+      }
       if (editorCheckIfRowIsBlank(&E.row[E.cy], E.row[E.cy].size)) {
         at = 0;
       }
 
-      if (*posPtr == lastCharOfRow)
+      if (*posPtr == lastCharOfRow) {
         break;
+      }
+
       at++;
       posPtr++;
     }
     while (posPtr != &E.row[E.cy].chars[E.row[E.cy].size]) {
       if (*(posPtr + 1) == ' ' || iscntrl(*(posPtr + 1))) {
-        E.cx = at;
-        return;
+        break;
       }
       at++;
       posPtr++;
     }
+    E.cx = at;
+    // editorSetStatusMessage("2");
   }
 }
 
@@ -233,16 +242,12 @@ void vimMotionb(int at) {
       posPtr = &E.row[E.cy].chars[at];
     }
 
-    if (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
-      at--;
-      posPtr--;
-      while (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
-        if (at == 0) {
-          return;
-        }
-        posPtr--;
-        at--;
+    while (*(posPtr - 1) == ' ' || iscntrl(*(posPtr - 1))) {
+      if (at == 0) {
+        return;
       }
+      posPtr--;
+      at--;
     }
 
     while (posPtr != &E.row[E.cy].chars[0]) {
