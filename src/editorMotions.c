@@ -1,16 +1,10 @@
 #include "editorMotions.h"
 #include "data.h"
 #include "editor_operations.h"
-#include "output.h"
 #include "row_operations.h"
 #include <ctype.h>
 #include <stdlib.h>
 
-void resetVimMotionBuffer() {
-  E.mBuffer.buffer[0] = '\0';
-  E.mBuffer.bufferSize = 0;
-  E.isDeleting = 0;
-}
 /*
  * This is a function for processing the motion buffer.
  * Really simple since it is only parsing one char at a time.
@@ -58,7 +52,7 @@ int processVimMotionBuffer() {
       hasExecutedMotion = 1;
       break;
     default:
-      resetVimMotionBuffer();
+      freeVimMotionBuffer();
     }
   } else if (E.mBuffer.bufferSize == 2) {
     if (E.mBuffer.buffer[0] == 'd') {
@@ -66,10 +60,10 @@ int processVimMotionBuffer() {
         vimMotiondd(E.cy);
         hasExecutedMotion = 1;
       } else {
-        resetVimMotionBuffer();
+        freeVimMotionBuffer();
       }
     } else {
-      resetVimMotionBuffer();
+      freeVimMotionBuffer();
     }
   }
   return hasExecutedMotion;
@@ -85,6 +79,7 @@ void freeVimMotionBuffer() {
   E.mBuffer.buffer = malloc(E.mBuffer.maxBufferSize);
   E.mBuffer.buffer[0] = '\0';
   E.mBuffer.bufferSize = 0;
+  E.isDeleting = 0;
 }
 /*
  * This is a function for appeding to the motion buffer.

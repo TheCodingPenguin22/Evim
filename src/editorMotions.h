@@ -17,7 +17,6 @@
  *
  */
 
-void resetVimMotionBuffer();
 int processVimMotionBuffer();
 void freeVimMotionBuffer();
 void appendToVimMotionBuffer(char c);

@@ -79,11 +79,9 @@ void editorMoveCursor(int key) {
 // Waits for editorReadKey() then it handles the keypresses that the function
 // returns.
 void editorProcessKeypressNormalMode() {
-  if (E.mBuffer.bufferSize) {
-    if (processVimMotionBuffer() >= 1) {
-      resetVimMotionBuffer();
-      return;
-    }
+  if (E.mBuffer.bufferSize && processVimMotionBuffer() >= 1) {
+    freeVimMotionBuffer();
+    return;
   }
   editorRefreshScreen();
 
